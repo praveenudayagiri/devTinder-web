@@ -1,7 +1,28 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { removeUser } from "../utils/userSlice";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
 
 const Navbar = () => {
   const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async() => {
+    try{
+        await axios.post(BASE_URL+"/logout",{},
+          {
+            withCredentials:true
+          }
+        );
+        dispatch(removeUser());
+        navigate("/login");
+    }
+    catch(err){
+      console.err(err);
+    }
+  };
 
   return (
     <div className="navbar bg-base-300 shadow-sm">
@@ -10,10 +31,7 @@ const Navbar = () => {
       </div>
       {user && (
         <div className="flex gap-3 items-center mx-5">
-          {/* User Name */}
           <p className="font-medium">{user.firstName}</p>
-
-          {/* Avatar Dropdown */}
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -21,10 +39,7 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img
-                  alt="User avatar"
-                  src={user.photoUrl}
-                />
+                <img alt="User avatar" src={user.photoUrl} />
               </div>
             </div>
             <ul
@@ -32,16 +47,16 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
+                <button className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </button>
               </li>
               <li>
-                <a>Settings</a>
+                <button>Settings</button>
               </li>
               <li>
-                <a>Logout</a>
+                <button onClick={handleLogout}>Logout</button>
               </li>
             </ul>
           </div>
