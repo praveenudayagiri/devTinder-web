@@ -30,7 +30,9 @@ const ConnectionCard = ({ connectionDetails = {} }) => {
         <p className="text-sm text-gray-500">
           {age && `${age} yrs • `}{gender}
         </p>
-
+        <p className="mt-2 text-gray-50 italic">
+          {about}
+         </p>
         {/* Skills as chips */}
         {skills.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-2">
