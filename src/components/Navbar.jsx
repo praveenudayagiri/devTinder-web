@@ -32,6 +32,7 @@ const Navbar = () => {
       </div>
       {user && (
         <div className="flex gap-3 items-center mx-5">
+          <Link to="/connections" className="font-medium mx-10">My Connections</Link>
           <p className="font-medium">{user.firstName}</p>
           <div className="dropdown dropdown-end">
             <div
@@ -52,9 +53,6 @@ const Navbar = () => {
                   Profile
                   
                 </Link>
-              </li>
-              <li>
-                <button>Settings</button>
               </li>
               <li>
                 <button onClick={handleLogout}>Logout</button>

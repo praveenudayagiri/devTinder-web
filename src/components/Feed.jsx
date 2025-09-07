@@ -32,9 +32,16 @@ const Feed = () => {
   }
 
   return (
-    <div className="flex flex-wrap gap-4 justify-center my-8 ">
-      <UserCard userDetails={userFeed[5]}/>
-    </div>
+    <>
+      { userFeed &&
+            <div className="min-h-screen flex flex-col">
+            <div className="flex flex-wrap gap-4 justify-center my-8 flex-1">
+              <UserCard userDetails={userFeed[0]}/>
+            </div>
+            </div>
+
+      }
+      </>
   );
 };
 
