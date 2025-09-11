@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFeed } from '../utils/feedSlice';
@@ -10,13 +10,14 @@ const Feed = () => {
   const userFeed = useSelector((store) => store.feed);
 
   const getFeed = async () => {
-    if (userFeed) return;
+    //if (userFeed) return;
     try {
       const res = await axios.post(
         BASE_URL + "/user/feed",
         {},
         { withCredentials: true }
       );
+      console.log(res.data.data);
       dispatch(addFeed(res.data.data));
     } catch (err) {
       console.log(err);
@@ -28,9 +29,11 @@ const Feed = () => {
   }, []);
 
   if (!userFeed) {
-    return <p>Loading feed...</p>; 
+    return <p className='flex justify-center my-60 mb-100 text-lg text-gray-500'>Loading feed...</p>; 
   }
-
+  if(userFeed.length===0){
+    return <p className='flex justify-center my-60 mb-100 text-lg text-gray-500'>No New Users</p>
+  }
   return (
     <>
       { userFeed &&

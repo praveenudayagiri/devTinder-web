@@ -32,6 +32,7 @@ const Navbar = () => {
       </div>
       {user && (
         <div className="flex gap-3 items-center mx-5">
+          <Link to="/" className="font-medium mx-10">Feed</Link>
           <Link to="/connections" className="font-medium mx-10">My Connections</Link>
           <Link to="/requests" className="font-medium mx-10">Requests</Link>
           <p className="font-medium">{user.firstName}</p>
