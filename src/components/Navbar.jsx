@@ -35,6 +35,7 @@ const Navbar = () => {
           <Link to="/" className="font-medium mx-10">Feed</Link>
           <Link to="/connections" className="font-medium mx-10">My Connections</Link>
           <Link to="/requests" className="font-medium mx-10">Requests</Link>
+          <Link to="/about" className="font-medium mx-10">About Us</Link>
           <p className="font-medium">{user.firstName}</p>
           <div className="dropdown dropdown-end">
             <div

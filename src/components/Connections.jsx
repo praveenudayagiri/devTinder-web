@@ -20,7 +20,7 @@ const Connections = () => {
   return (
     <div>
         <div className='flex justify-center'>
-            <h1 className='text-2xl'>Connections</h1>
+            <h1 className='text-2xl my-10'>Connections</h1>
         </div>
         <div className='justify-items-center mb-60'>
             {connectionsData && connectionsData.length > 0 ? (
@@ -28,7 +28,7 @@ const Connections = () => {
                 <ConnectionCard key={card._id} connectionDetails={card} />
                 ))
                 ) : (
-                    <p className="text-center text-gray-500 mt-4">No connections found.</p>
+                    <p className="text-center text-gray-500 mt-4 my-100">No connections found.</p>
                 )}
         </div>
 

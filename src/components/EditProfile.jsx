@@ -7,7 +7,7 @@ import UserCard from './userCard';
 
 // Default avatar images for genders
 const defaultAvatars = {
-  male: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+  male: "https://i.pinimg.com/736x/d6/36/d5/d636d53048eccf75fed71e3add231b94.jpg",
   female: "https://img.freepik.com/premium-photo/3d-illustration-cartoon-business-woman-character-avatar-profile_1183071-541.jpg",
   other: "https://tse3.mm.bing.net/th/id/OIP.XIIqDp2nB7ngeav_4xy-IgHaHa?r=0&cb=ucfimgc2&w=980&h=980&rs=1&pid=ImgDetMain&o=7&rm=3"
 };

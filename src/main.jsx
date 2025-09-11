@@ -10,6 +10,7 @@ import appStore from "./utils/appStore";
 import Profile from "./components/Profile";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
+import About from "./components/About";
 
 const appRouter = createBrowserRouter([
   {
@@ -33,13 +34,17 @@ const appRouter = createBrowserRouter([
         element: <Test />,
       },
       {
-        path: "/",
-        element: <Feed />,
+        path:"/about",
+        element:<About/>
       },
       {
         path:"/profile",
         element:<Profile/>
-      }
+      },
+      {
+        path: "/",
+        element: <Feed />,
+      },
     ],
   },
 ]);

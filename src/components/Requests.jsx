@@ -53,7 +53,7 @@ const Requests = () => {
                       </div>
                   </div>
       }
-
+    <p className='text-2xl flex justify-center my-5'>Requests</p>
       {requestsData && requestsData.length > 0 ? (
         requestsData.map((req) => {
           const {

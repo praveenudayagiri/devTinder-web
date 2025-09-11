@@ -1,11 +1,11 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="mt-7 left-0 w-full bg-base-200 text-base-content px-6 py-2 flex flex-col items-center text-sm">
       <nav className="flex gap-4">
-        <a className="link link-hover">About us</a>
+        <Link to="/about">About us</Link>
         <a className="link link-hover">Contact</a>
-        <a className="link link-hover">Jobs</a>
-        <a className="link link-hover">Press kit</a>
       </nav>
       <div className="flex gap-4 mt-1">
         <a
