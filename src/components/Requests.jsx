@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addRequests, updateRequests } from '../utils/requestSlice';
@@ -7,13 +7,13 @@ import axios from 'axios';
 const Requests = () => {
   const requestsData = useSelector((store) => store.requests);
   const dispatch = useDispatch();
+  const [showNotification,setShowNotification] = useState(false);
 
   const getRequestsData = async () => {
     try {
       const res = await axios.get(BASE_URL + '/user/requests/received', {
         withCredentials: true,
       });
-      console.log(res.data.formattedData);
       dispatch(addRequests(res.data.formattedData));
     } catch (err) {
       console.log(err);
@@ -29,6 +29,12 @@ const Requests = () => {
       );
       console.log(res.data);
       dispatch(updateRequests(requestId));
+      if(showNotification){
+        setShowNotification(true);
+        setTimeout(()=>{
+          setShowNotification(false);
+        },2000);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -39,7 +45,15 @@ const Requests = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center p-6">
+    <div className="flex flex-col items-center p-6 mb-55">
+      {showNotification &&
+                  <div className="toast toast-top toast-center fixed z-50">
+                      <div className="alert alert-success">
+                          <span>Request Accepted!</span>
+                      </div>
+                  </div>
+      }
+
       {requestsData && requestsData.length > 0 ? (
         requestsData.map((req) => {
           const {

@@ -22,7 +22,7 @@ const Connections = () => {
         <div className='flex justify-center'>
             <h1 className='text-2xl'>Connections</h1>
         </div>
-        <div className='justify-items-center'>
+        <div className='justify-items-center mb-60'>
             {connectionsData && connectionsData.length > 0 ? (
                 connectionsData.map((card) => (
                 <ConnectionCard key={card._id} connectionDetails={card} />
