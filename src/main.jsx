@@ -11,6 +11,7 @@ import Profile from "./components/Profile";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 import About from "./components/About";
+import Chat from "./components/Chat";
 
 const appRouter = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const appRouter = createBrowserRouter([
       {
         path:"/profile",
         element:<Profile/>
+      },
+      {
+        path:"/chat/:targetId",
+        element:<Chat/>
       },
       {
         path: "/",

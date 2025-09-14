@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ConnectionCard = ({ connectionDetails = {} }) => {
   const {
+    _id="",
     firstName = "",
     lastName = "",
     age = "",
@@ -49,7 +51,9 @@ const ConnectionCard = ({ connectionDetails = {} }) => {
 
         {/* Action buttons */}
         <div className="card-actions justify-end mt-3">
+          <Link to={"/chat/"+_id}>
           <button className="btn btn-sm btn-primary rounded-full">Message</button>
+          </Link>
         </div>
       </div>
     </div>
