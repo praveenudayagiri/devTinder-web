@@ -3,7 +3,7 @@ import { BASE_URL } from '../utils/constants';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { addUser } from '../utils/userSlice';
-import UserCard from './userCard';
+import UserCard from './UserCard';
 
 // Default avatar images for genders
 const defaultAvatars = {
