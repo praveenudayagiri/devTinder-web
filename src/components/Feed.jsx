@@ -1,8 +1,8 @@
-import React, { useEffect} from 'react'
-import { BASE_URL } from '../utils/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { addFeed } from '../utils/feedSlice';
-import axios from 'axios';
+import React, { useEffect } from "react";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { addFeed } from "../utils/feedSlice";
+import axios from "axios";
 import UserCard from "./UserCard";
 
 const Feed = () => {
@@ -10,16 +10,16 @@ const Feed = () => {
   const userFeed = useSelector((store) => store.feed);
 
   const getFeed = async () => {
-    if (userFeed) return;
+    if (userFeed && userFeed.length > 0) return;
     try {
       const res = await axios.post(
         BASE_URL + "/user/feed",
         {},
         { withCredentials: true }
       );
-      dispatch(addFeed(res.data.data));
+      dispatch(addFeed(res.data?.data ?? []));
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -28,22 +28,27 @@ const Feed = () => {
   }, []);
 
   if (!userFeed) {
-    return <p className='flex justify-center my-60 mb-100 text-lg text-gray-500'>Loading feed...</p>; 
+    return (
+      <p className="flex justify-center my-60 mb-100 text-lg text-gray-500">
+        Loading feed...
+      </p>
+    );
   }
-  if(userFeed.length===0){
-    return <p className='flex justify-center my-60 mb-100 text-lg text-gray-500'>No New Users</p>
-  }
-  return (
-    <>
-      { userFeed &&
-            <div className="min-h-screen flex flex-col">
-            <div className="flex flex-wrap gap-4 justify-center my-8 flex-1">
-              <UserCard userDetails={userFeed[0]}/>
-            </div>
-            </div>
 
-      }
-      </>
+  if (userFeed.length === 0) {
+    return (
+      <p className="flex justify-center my-60 mb-100 text-lg text-gray-500">
+        No New Users
+      </p>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <div className="flex flex-wrap gap-4 justify-center my-8 flex-1">
+        {userFeed[0] && <UserCard userDetails={userFeed[0]} />}
+      </div>
+    </div>
   );
 };
 

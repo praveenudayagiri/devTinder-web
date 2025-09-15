@@ -1,92 +1,117 @@
-import React, { useEffect, useState } from "react";
-import createSocketConnection from "../utils/socket";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import createSocketConnection from "../utils/socket";
 import { useSelector } from "react-redux";
-
-let socket;
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
 
 const Chat = () => {
-  const [newMessage, setNewMessage] = useState("");
+  const { targetUserId } = useParams();
   const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const user = useSelector((store) => store.user);
+  const userId = user?._id;
 
-  const { targetId } = useParams();
-  const { _id, firstName } = useSelector((store) => store.user);
+  const socketRef = useRef(null);
+
+  const fetchChatMessages = async () => {
+    try {
+      const chat = await axios.get(BASE_URL + "/chat/" + targetUserId, {
+        withCredentials: true,
+      });
+
+      const chatMessages =
+        chat?.data?.messages?.map((msg) => {
+          const { senderId, text } = msg;
+          return {
+            firstName: senderId?.firstName,
+            lastName: senderId?.lastName,
+            text,
+          };
+        }) ?? [];
+
+      setMessages(chatMessages);
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+    }
+  };
 
   useEffect(() => {
-    if (!_id) return;
+    fetchChatMessages();
+  }, [targetUserId]);
 
-    socket = createSocketConnection();
+  useEffect(() => {
+    if (!userId) return;
 
-    socket.emit("joinChat", { firstName, _id, targetId });
+    const socket = createSocketConnection();
+    socketRef.current = socket;
 
-    socket.on("messageReceived", ({ senderId, senderName, text, time }) => {
-      setMessages((prev) => [...prev, { senderId, senderName, text, time }]);
+    socket.emit("joinChat", {
+      firstName: user?.firstName,
+      userId,
+      targetId: targetUserId,
+    });
+
+    socket.on("messageReceived", ({ firstName, lastName, text }) => {
+      setMessages((messages) => [...messages, { firstName, lastName, text }]);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [_id, firstName, targetId]);
+  }, [userId, targetUserId, user?.firstName]);
 
   const sendMessage = () => {
-    if (newMessage.trim()) {
-      socket.emit("sendMessage", {
-        firstName,
-        _id,
-        targetId,
+    if (!newMessage.trim()) return;
+
+    if (socketRef.current) {
+      socketRef.current.emit("sendMessage", {
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        userId,
+        targetId: targetUserId,
         text: newMessage,
       });
-
-      setNewMessage("");
     }
+    setMessages((messages) => [
+  ...messages,
+  {
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    text: newMessage,
+  },
+]);
+    setNewMessage("");
   };
 
   return (
-    <div className="w-3/4 mx-auto border border-gray-600 m-5 h-[70vh] flex flex-col rounded-lg bg-base-200">
-      {/* Header */}
-      <h1 className="p-4 border-b border-gray-600 font-semibold">Chat</h1>
-
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
-        {messages.length > 0 ? (
-          messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`chat ${
-                msg.senderId === _id ? "chat-end" : "chat-start"
-              }`}
-            >
-              <div
-                className={`chat-bubble ${
-                  msg.senderId === _id
-                    ? "chat-bubble-primary"
-                    : "chat-bubble-secondary"
-                }`}
-              >
-                <b>{msg.senderId === _id ? "You" : msg.senderName}:</b>{" "}
-                {msg.text}
-                <div className="text-xs opacity-70">
-                  {new Date(msg.time).toLocaleTimeString()}
-                </div>
-              </div>
+    <div className="w-3/4 mx-auto border border-gray-600 m-5 h-[70vh] flex flex-col">
+      <h1 className="p-5 border-b border-gray-600">Chat</h1>
+      <div className="flex-1 overflow-scroll p-5">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={
+              "chat " +
+              (user?.firstName === msg.firstName ? "chat-end" : "chat-start")
+            }
+          >
+            <div className="chat-header">
+              {`${msg.firstName ?? ""} ${msg.lastName ?? ""}`}
+              <time className="text-xs opacity-50">2 hours ago</time>
             </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500">No messages yet</p>
-        )}
+            <div className="chat-bubble">{msg.text ?? ""}</div>
+            <div className="chat-footer opacity-50">Seen</div>
+          </div>
+        ))}
       </div>
-
-      {/* Input Area */}
-      <div className="p-3 border-t border-gray-600 flex gap-2">
+      <div className="p-5 border-t border-gray-600 flex items-center gap-2">
         <input
-          type="text"
-          placeholder="Type your message..."
-          className="input input-bordered flex-1"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          className="flex-1 border border-gray-500 text-white rounded p-2"
         />
-        <button className="btn btn-primary" onClick={sendMessage}>
+        <button onClick={sendMessage} className="btn btn-secondary">
           Send
         </button>
       </div>

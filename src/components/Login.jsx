@@ -17,27 +17,39 @@ const Login = () => {
 
   const handleSubmit = async () => {
     try {
+      if (!email || !password || (!isLoginForm && (!firstName || !lastName))) {
+        setError("Please fill in all required fields");
+        return;
+      }
+
       if (isLoginForm) {
-        
         const loginData = await axios.post(
           BASE_URL + "/login",
           { email, password },
           { withCredentials: true }
         );
-        dispatch(addUser(loginData.data));
-        navigate("/");
+        if (loginData?.data) {
+          dispatch(addUser(loginData.data));
+          navigate("/");
+        }
       } else {
-        
         const signupData = await axios.post(
           BASE_URL + "/signup",
           { firstName, lastName, email, password },
           { withCredentials: true }
         );
-        dispatch(addUser(signupData.data));
-        navigate("/profile");
+        if (signupData?.data) {
+          dispatch(addUser(signupData.data));
+          navigate("/profile");
+        }
       }
     } catch (err) {
-      setError(err.response?.data || "Something went wrong");
+      setError(
+        err.response?.data?.message ||
+          err.response?.data ||
+          err.message ||
+          "Something went wrong"
+      );
     }
   };
 
@@ -49,7 +61,6 @@ const Login = () => {
             {isLoginForm ? "Login" : "Sign Up"}
           </h2>
 
-          {/* First Name & Last Name only for Signup */}
           {!isLoginForm && (
             <>
               <div className="form-control">
@@ -82,7 +93,6 @@ const Login = () => {
             </>
           )}
 
-          {/* Email */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Email</span>
@@ -97,7 +107,6 @@ const Login = () => {
             />
           </div>
 
-          {/* Password */}
           <div className="form-control mt-4">
             <label className="label">
               <span className="label-text">Password</span>
@@ -112,22 +121,21 @@ const Login = () => {
             />
           </div>
 
-          {/* Error */}
-          <span className="text-rose-700 text-center">{error}</span>
+          {error && (
+            <span className="text-rose-700 text-center">{error}</span>
+          )}
 
-          {/* Submit */}
           <div className="card-actions justify-end mt-6">
-            <button
-              className="btn btn-primary w-full"
-              onClick={handleSubmit}
-            >
+            <button className="btn btn-primary w-full" onClick={handleSubmit}>
               {isLoginForm ? "Login" : "Sign Up"}
             </button>
           </div>
 
-          {/* Toggle */}
           <p
-            onClick={() => setIsLoginForm(!isLoginForm)}
+            onClick={() => {
+              setIsLoginForm(!isLoginForm);
+              setError("");
+            }}
             className="flex justify-center cursor-pointer text-blue-600 mt-4"
           >
             {isLoginForm

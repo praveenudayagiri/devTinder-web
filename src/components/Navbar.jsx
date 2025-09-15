@@ -1,42 +1,50 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { removeUser } from "../utils/userSlice";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
-import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = async() => {
-    try{
-        await axios.post(BASE_URL+"/logout",{},
-          {
-            withCredentials:true
-          }
-        );
-        dispatch(removeUser());
-        navigate("/login");
-    }
-    catch(err){
-      console.err(err);
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        BASE_URL + "/logout",
+        {},
+        { withCredentials: true }
+      );
+      dispatch(removeUser());
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
     <div className="navbar bg-base-300 shadow-sm">
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">DevTinder</Link>
+        <Link to="/" className="btn btn-ghost text-xl">
+          DevTinder
+        </Link>
       </div>
       {user && (
         <div className="flex gap-3 items-center mx-5">
-          <Link to="/" className="font-medium mx-10">Feed</Link>
-          <Link to="/connections" className="font-medium mx-10">My Connections</Link>
-          <Link to="/requests" className="font-medium mx-10">Requests</Link>
-          <Link to="/about" className="font-medium mx-10">About Us</Link>
-          <p className="font-medium">{user.firstName}</p>
+          <Link to="/" className="font-medium mx-10">
+            Feed
+          </Link>
+          <Link to="/connections" className="font-medium mx-10">
+            My Connections
+          </Link>
+          <Link to="/requests" className="font-medium mx-10">
+            Requests
+          </Link>
+          <Link to="/about" className="font-medium mx-10">
+            About Us
+          </Link>
+          <p className="font-medium">{user?.firstName ?? "User"}</p>
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -44,7 +52,10 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img alt="User avatar" src={user.photoUrl} />
+                <img
+                  alt="User avatar"
+                  src={user?.photoUrl ?? "https://via.placeholder.com/40"}
+                />
               </div>
             </div>
             <ul
@@ -54,7 +65,6 @@ const Navbar = () => {
               <li>
                 <Link to="/profile" className="justify-between">
                   Profile
-                  
                 </Link>
               </li>
               <li>

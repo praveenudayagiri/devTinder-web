@@ -43,7 +43,7 @@ const appRouter = createBrowserRouter([
         element:<Profile/>
       },
       {
-        path:"/chat/:targetId",
+        path:"/chat/:targetUserId",
         element:<Chat/>
       },
       {

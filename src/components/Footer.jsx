@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="fixed bottom-0 left-0 w-full bg-base-200 text-base-content text-xs px-4 py-2 flex items-center justify-between shadow">
-      {/* Navigation Links */}
       <nav className="flex gap-3">
         <Link to="/about" className="hover:underline">
           About
@@ -13,27 +12,18 @@ const Footer = () => {
         </a>
       </nav>
 
-      {/* Copyright */}
       <p className="text-[11px] opacity-70 text-center flex-1">
-        © {new Date().getFullYear()} Praveen Udayagiri. All rights reserved.
+        © {new Date()?.getFullYear() || ""} Praveen Udayagiri. All rights reserved.
       </p>
 
-      {/* Social Icons */}
       <div className="flex gap-3">
-        {/* LinkedIn */}
         <a
           href="https://www.linkedin.com/in/praveen-udayagiri-589775259"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            className="fill-current"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" className="fill-current">
             <path d="M19 0h-14c-2.76 0-5 2.24-5 
               5v14c0 2.76 2.24 5 5 5h14c2.76 
               0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 
@@ -47,20 +37,13 @@ const Footer = () => {
           </svg>
         </a>
 
-        {/* GitHub */}
         <a
           href="https://github.com/praveenudayagiri"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            className="fill-current"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" className="fill-current">
             <path d="M12 .5c-6.627 0-12 5.373-12 
               12 0 5.302 3.438 9.8 8.205 
               11.387.6.113.82-.26.82-.577 
@@ -85,18 +68,11 @@ const Footer = () => {
           </svg>
         </a>
 
-        {/* Gmail */}
         <a
           href="mailto:praveenudayagiri724@gmail.com"
           aria-label="Email"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            className="fill-current"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" className="fill-current">
             <path d="M12 13.5l-11.5-7.5v13.5c0 
               1.105.895 2 2 2h19c1.105 
               0 2-.895 2-2v-13.5l-11.5 
